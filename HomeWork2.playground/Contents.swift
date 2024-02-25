@@ -192,11 +192,19 @@ var weatherInCities: [Weather] = []
 // запускаємо цикл для заповнення пустого масиву weatherInCities
 // інформацією про погоду для кожної назви міста, вказаних у масиві cityNames
 for index in 0 ..< cityNames.count {
+     var minTemp = Double(arc4random() % 30) + kelvinZero
+     var maxTemp = Double(arc4random() % 30) + kelvinZero
+     
+     // Ensure that max temperature is always higher than min temperature
+     if minTemp > maxTemp {
+         swap(&minTemp, &maxTemp)
+     }
+    
     let weatherInfo = Weather(
         city: cityNames[index], // записуємо назву міста
         temp: Double(arc4random() % 30) + kelvinZero, // генеруємо випадкове значення температури у Кельвінах
-        tempMin: Double(arc4random() % 30) + kelvinZero, // генеруємо випадкове значення температури у Кельвінах
-        tempMax: Double(arc4random() % 30) + kelvinZero // генеруємо випадкове значення температури у Кельвінах
+        tempMin: minTemp, // встановлюємо мінімальну температуру
+        tempMax: maxTemp // встановлюємо максимальну температуру
     )
     weatherInCities.append(weatherInfo) // додаємо згенеровані погодні значення для поточної назви міста
 }
