@@ -112,6 +112,70 @@ import Foundation
 
  */
 
+class TemperatureConverter {
+    
+    // Convert temperature from Kelvin to Celsius
+    static func kelvinToCelsius(_ kelvin: Double) -> Double {
+        return kelvin - 273.15
+    }
+    
+    // Overloaded method to allow rounding with precision
+    static func kelvinToCelsius(_ kelvin: Double, precision: Int) -> String {
+        return String(format: "%.\(precision)f", kelvin - 273.15)
+    }
+    
+    // Convert temperature from Kelvin to Fahrenheit
+    static func kelvinToFahrenheit(_ kelvin: Double) -> Double {
+        return kelvin * (9.0/5.0) - 459.67
+    }
+    
+    // Overloaded method to allow rounding with precision
+    static func kelvinToFahrenheit(_ kelvin: Double, precision: Int) -> String {
+        return String(format: "%.\(precision)f", kelvin * (9.0/5.0) - 459.67)
+    }
+    
+    // Convert temperature from Celsius to Fahrenheit
+    static func celsiusToFahrenheit(_ celsius: Double) -> Double {
+        return celsius * (9.0/5.0) + 32.0
+    }
+    
+    // Overloaded method to allow rounding with precision
+    static func celsiusToFahrenheit(_ celsius: Double, precision: Int) -> String {
+        return String(format: "%.\(precision)f", celsius * (9.0/5.0) + 32.0)
+    }
+    
+    // Convert temperature from Celsius to Kelvin
+    static func celsiusToKelvin(_ celsius: Double) -> Double {
+        return celsius + 273.15
+    }
+    
+    // Overloaded method to allow rounding with precision
+    static func celsiusToKelvin(_ celsius: Double, precision: Int) -> String {
+        return String(format: "%.\(precision)f", celsius + 273.15)
+    }
+    
+    // Convert temperature from Fahrenheit to Celsius
+    static func fahrenheitToCelsius(_ fahrenheit: Double) -> Double {
+        return (fahrenheit - 32.0) * (5.0/9.0)
+    }
+    
+    // Overloaded method to allow rounding with precision
+    static func fahrenheitToCelsius(_ fahrenheit: Double, precision: Int) -> String {
+        return String(format: "%.\(precision)f", (fahrenheit - 32.0) * (5.0/9.0))
+    }
+    
+    // Convert temperature from Fahrenheit to Kelvin
+    static func fahrenheitToKelvin(_ fahrenheit: Double) -> Double {
+        return (fahrenheit + 459.67) * (5.0/9.0)
+    }
+    
+    // Overloaded method to allow rounding with precision
+    static func fahrenheitToKelvin(_ fahrenheit: Double, precision: Int) -> String {
+        return String(format: "%.\(precision)f", (fahrenheit + 459.67) * (5.0/9.0))
+    }
+}
+
+
 // резервуємо свій тип для зберігання данних про погоду
 // (назва міста, температура, мінімальна температура, максимальна температура)
 typealias Weather = (String, Double, Double, Double)
@@ -127,7 +191,7 @@ var weatherInCities: [Weather] = []
 
 // запускаємо цикл для заповнення пустого масиву weatherInCities
 // інформацією про погоду для кожної назви міста, вказаних у масиві cityNames
-for index in 1 ..< 4 {
+for index in 0 ..< cityNames.count {
     let weatherInfo = Weather(
         city: cityNames[index], // записуємо назву міста
         temp: Double(arc4random() % 30) + kelvinZero, // генеруємо випадкове значення температури у Кельвінах
@@ -144,19 +208,18 @@ let cityIndex = Int(arc4random() % UInt32(weatherInCities.count - 1))
 
 // виводимо ПОВНУ інформацію для кожного міста, що є у масиві weatherInCities
 print("---------- ЕКРАН 1 ----------")
-for index in 2 ... 8 {
-    let _ = index
-    let weatherInfo = weatherInCities[0]
+for index in 0 ..< weatherInCities.count {
+    let weatherInfo = weatherInCities[index]
     let city = weatherInfo.0
     let kelvin = weatherInfo.1
     let kelvinMin = weatherInfo.2
     let kelvinMax = weatherInfo.3
 
     print("\n\(city):")
-    print("t: \(kelvin) C")
-    print("t: \(kelvin) F")
-    print("min t: \(kelvinMin) C / \(kelvinMin) F")
-    print("max t: \(kelvinMax) C / \(kelvinMax) F")
+    print("t: \(TemperatureConverter.kelvinToCelsius(kelvin)) C")
+    print("t: \(TemperatureConverter.kelvinToFahrenheit(kelvin, precision: 3)) F")
+    print("min t: \(TemperatureConverter.kelvinToCelsius(kelvinMin)) C / \(TemperatureConverter.kelvinToFahrenheit(kelvinMin, precision: 3)) F")
+    print("max t: \(TemperatureConverter.kelvinToCelsius(kelvinMax)) C / \(TemperatureConverter.kelvinToFahrenheit(kelvinMax, precision: 3)) F")
 }
 print("\n-----------------------------")
 print("\n\n")
@@ -166,12 +229,11 @@ print("\n\n")
 // виводимо інформацію про температуру тільки у Цельсій
 // для кожного міста, що є у масиві weatherInCities
 print("---------- ЕКРАН 2 ----------")
-for index in 1 ..< 10 {
-    let _ = index
-    let weatherInfo = weatherInCities[2]
+for index in 0 ..< weatherInCities.count {
+    let weatherInfo = weatherInCities[index]
     let city = weatherInfo.0
     let kelvin = weatherInfo.1
-    print("\n\(city):\nt: \(String(format: "%.1f", kelvin)) C")
+    print("\n\(city):\nt: \(String(format: "%.1f", TemperatureConverter.kelvinToCelsius(kelvin))) C")
 }
 print("\n-----------------------------")
 print("\n\n")
@@ -181,11 +243,10 @@ print("\n\n")
 // виводимо інформацію про температуру тільки у Фаренгейт
 // для кожного міста, що є у масиві weatherInCities
 print("---------- ЕКРАН 3 ----------")
-for index in 0 ... weatherInCities.count {
-    let _ = index
-    let weatherInfo = weatherInCities[cityIndex]
+for index in 0 ..< weatherInCities.count {
+    let weatherInfo = weatherInCities[index]
     let city = weatherInfo.0
     let kelvin = weatherInfo.1
-    print("\n\(city):\nt: \(String(format: "%.2f", kelvin)) F")
+    print("\n\(city):\nt: \(String(format: "%.2f", TemperatureConverter.kelvinToFahrenheit(kelvin))) F")
 }
 print("\n-----------------------------")
